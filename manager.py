@@ -1,4 +1,5 @@
 from rich.console import Console
+from rich.table import Table
 import launch
 import requests
 import subprocess
@@ -10,10 +11,28 @@ class ReaperManager:
     """
     def __init__(self) -> None:
         self.console = Console()
-        self.track_agent = Agent(name="Reaper Track Manager",
-                                 instructions="you are a Reaper DAW expert specialized in handling tracks",
-                                 tools=[self.get_track, self.render_track, self.mute_track]
-                                 )
+        self.track_agent = Agent(
+            name="Reaper Track Manager",
+            instructions="you are a Reaper DAW expert specialized in handling tracks",
+            tools=[self.get_track, self.render_track, self.mute_track]
+        )
+        self.print_tools()
+
+    def print_tools(self) -> None:
+        """
+        List available function tools in a table.
+        """
+        table = Table(title="Available Tools")
+        table.add_column("Name", style="cyan", no_wrap=True)
+        table.add_column("Description", style="magenta")
+
+        for tool in self.track_agent.tools:
+            # unwrap FunctionTool to real function if needed
+            name = tool.name
+            desc = (tool.description or "").strip().splitlines()[0]
+            table.add_row(name, desc)
+
+        self.console.print(table)
 
     async def run(self, query: str) -> None:
         print("Running ReaperManager")
