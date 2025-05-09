@@ -29,5 +29,6 @@ uv --version
    cd reaper-agent
 2. Run
    uv run main.py 
-
-just type away
+   ```
+   
+just type the tools

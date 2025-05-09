@@ -3,6 +3,7 @@ from rich.table import Table
 import launch
 import requests
 import subprocess
+from connect import WEB_INTERFACE_PORT
 
 from agents import Agent, Runner, function_tool
 
@@ -54,7 +55,7 @@ class ReaperManager:
         """
         Fetch the list of tracks from the Reaper HTTP API and print the track names.
         """
-        url = "http://localhost:2307/_/TRACK"
+        url = f"http://localhost:{WEB_INTERFACE_PORT}/_/TRACK"
         response = requests.get(url)
         response.raise_for_status()
         content = response.content.decode("utf-8")
@@ -72,7 +73,7 @@ class ReaperManager:
         """
         Trigger a project render via the Reaper HTTP API using code 41824.
         """
-        url = "http://localhost:2307/_/41824"
+        url = f"http://localhost:{WEB_INTERFACE_PORT}/_/_RSe49ecb0e365cca5871337e8d657ab98a3197a6b2"
         response = requests.get(url)
         response.raise_for_status()
         print(f"Render command sent, status={response.status_code}")
@@ -86,7 +87,7 @@ class ReaperManager:
         """
         Mute the specified track via the Reaper HTTP API.
         """
-        url = f"http://localhost:2307/_/SET/TRACK/{track_id}/MUTE/-2"
+        url = f"http://localhost:{WEB_INTERFACE_PORT}/_/SET/TRACK/{track_id}/MUTE/-2"
         response = requests.get(url)
         response.raise_for_status()
         print(f"Muted track {track_id}, status={response.status_code}")
